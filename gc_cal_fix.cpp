@@ -99,15 +99,15 @@ BOOL CALLBACK EnumJoysticksCallback(const DIDEVICEINSTANCE*
 	
 
 	if (vid==0x1781 && pid==0x0a9a) {
-		printf("Found Device ID : VID=%04x  PID=%04x (ADAP-GCN64 v1)\n", vid, pid);
+		printf("Found Device ID : VID=%04x  PID=%04x (ADAP-GCN64 v1.x)\n", vid, pid);
 		fixJoystickCalibration(); // uses global
 	}
 	else if (vid==0x1740 && pid==0x057f) {
-		printf("Found Device ID : VID=%04x  PID=%04x (ADAP-GCN64 v2)\n", vid, pid);
+		printf("Found Device ID : VID=%04x  PID=%04x (ADAP-GCN64 v2.1)\n", vid, pid);
 		fixJoystickCalibration(); // uses global
 	}
 	else if (vid==0x289b && pid==0x0001) {
-		printf("Found Device ID : VID=%04x  PID=%04x (ADAP-GCN64 v2)\n", vid, pid);
+		printf("Found Device ID : VID=%04x  PID=%04x (ADAP-GCN64 v2.2)\n", vid, pid);
 		fixJoystickCalibration(); // uses global
 	}
 	else {
@@ -123,7 +123,7 @@ int main(int argc, const char * argv[])
 	HRESULT res;
 
 	cout << "raphnet.net Gamecube adapter L/R buttons calibration fixer v0.2" << endl;
-	cout << "Copyright (C) 2009-2012, Raphael Assenat" << endl << endl;
+	cout << "Copyright (C) 2009-2013, Raphael Assenat" << endl << endl;
 
 	res = DirectInput8Create(GetModuleHandle( NULL ), DIRECTINPUT_VERSION, IID_IDirectInput8, 
 		(VOID **)&g_pDI, NULL);
