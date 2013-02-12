@@ -14,6 +14,8 @@ LPDIRECTINPUT8          g_pDI = NULL;
 LPDIRECTINPUTDEVICE8    g_pJoystick = NULL;
 
 static int g_num_fixed = 0;
+static int g_only_list = 0;
+static int g_show_unsigned = 0;
 
 int fixJoystickCalibration(void)
 {
@@ -54,16 +56,24 @@ int fixJoystickCalibration(void)
 			continue;
 		}
 	
-		printf("	%d: %3ld    %3ld    %3ld\n", x, cpoints.lMin, cpoints.lCenter, cpoints.lMax);		
-
-		if (x==4 || x==5) {
-			cpoints.lCenter = cpoints.lMax;
-			cpoints.lMax = 0xff;
-		
-			g_pJoystick->SetProperty(DIPROP_CALIBRATION, &cpoints.diph);
-	
+		if (g_show_unsigned) {	
+			printf("	%d: %3ld    %3ld    %3ld", x, 
+					cpoints.lMin, cpoints.lCenter, cpoints.lMax);
+		} else {
+			printf("	%d: %3ld    %3ld    %3ld", x, 
+					cpoints.lMin - 127, cpoints.lCenter - 127, cpoints.lMax - 127);
 		}
-		
+
+		if (!g_only_list) {
+			if (x==4 || x==5) {
+				cpoints.lCenter = cpoints.lMax;
+				cpoints.lMax = 0xff;
+			
+				g_pJoystick->SetProperty(DIPROP_CALIBRATION, &cpoints.diph);
+				printf(" (Modified)");
+			}
+		}
+		printf("\n");
 	}
 	
 	g_num_fixed++;
@@ -120,12 +130,47 @@ BOOL CALLBACK EnumJoysticksCallback(const DIDEVICEINSTANCE*
 	return DIENUM_CONTINUE;	
 }
 
-int main(int argc, const char * argv[])
+int main(int argc, char * argv[])
 {
 	HRESULT res;
-	
+	int opt;
+	int run_calibration = 0;
+
 	printf("raphnet.net Gamecube adapter L/R buttons calibration fixer v1.0\n");
 	printf("Copyright (C) 2009-2013, Raphael Assenat\n\n");	
+
+	while(-1 != (opt = getopt(argc, argv, "hlcu"))) {
+		switch (opt)
+		{
+			case 'h':
+				printf("Usage: ./gc_calfix_ng <options>\n\n");
+				printf("By default, this tool adjusts the calibration data for all supported joysticks.\n");
+				printf("The following options can be used to perform other tasks.\n\n"); 
+				printf("Options:\n");
+				printf("  -h       Show help\n");
+				printf("  -l       Only list and display supported joystick calibration settings\n");
+				printf("  -c       Open the windows calibration dialog before exiting\n");
+				printf("  -u       Show unsigned calibration values.\n");
+				break;
+
+			case 'u':
+				g_show_unsigned = 1;
+				break;
+			
+			case 'l':
+				g_only_list = 1;
+				break;
+			
+			case 'c':
+				run_calibration = 1;
+				break;
+
+			default:				
+				fprintf(stderr, "Unknown option passed. See -h\n");
+				break;
+		}	
+	}
+
 
 	res = DirectInput8Create(GetModuleHandle( NULL ), DIRECTINPUT_VERSION, IID_IDirectInput8, 
 		(VOID **)&g_pDI, NULL);
@@ -139,11 +184,13 @@ int main(int argc, const char * argv[])
 						NULL, DIEDFL_ATTACHEDONLY);
 
 	if (!g_num_fixed) {
-		printf("Modified no joystick.");
+		printf("No supported joysticks found.");
 	}
 	else {
-		printf("Modified %d joystick(s).\n", g_num_fixed);
-	//	g_pJoystick->RunControlPanel(0,0);
+		printf("Found %d supported joystick(s).\n", g_num_fixed);\
+		if (run_calibration) {
+			g_pJoystick->RunControlPanel(0,0);
+		}
 	}
 
 	printf("\n -- Press ENTER to exit --\n");
