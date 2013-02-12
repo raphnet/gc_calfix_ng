@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <getopt.h>
 #include <iostream>
 #include <string>
 
@@ -36,15 +37,16 @@ int fixJoystickCalibration(void)
 		printf("*** ERROR ****\n");
 	}
 	else {
-		printf("	Axes: %d, Buttons: %d\n", devcaps.dwAxes, devcaps.dwButtons);
+		printf("	Axes: %lu, Buttons: %lu\n", devcaps.dwAxes, devcaps.dwButtons);
 	}	
+
+	printf("           Min.  Center  Max.\n");
 
 	cpoints.diph.dwSize = sizeof(cpoints);
 	cpoints.diph.dwHeaderSize = sizeof(DIPROPHEADER);
 	cpoints.diph.dwHow = DIPH_BYOFFSET;	
 
 	for (x=0; x<6; x++) {
-		//cpoints.diph.dwObj = x*4;
 		cpoints.diph.dwObj = axes[x];
 	
 		hr = g_pJoystick->GetProperty(DIPROP_CALIBRATION, &cpoints.diph);
@@ -52,7 +54,7 @@ int fixJoystickCalibration(void)
 			continue;
 		}
 	
-		printf("	%d: %04x %04x %04x\n", x, cpoints.lMin, cpoints.lCenter, cpoints.lMax);		
+		printf("	%d: %3ld    %3ld    %3ld\n", x, cpoints.lMin, cpoints.lCenter, cpoints.lMax);		
 
 		if (x==4 || x==5) {
 			cpoints.lCenter = cpoints.lMax;
@@ -121,9 +123,9 @@ BOOL CALLBACK EnumJoysticksCallback(const DIDEVICEINSTANCE*
 int main(int argc, const char * argv[])
 {
 	HRESULT res;
-
-	cout << "raphnet.net Gamecube adapter L/R buttons calibration fixer v0.2" << endl;
-	cout << "Copyright (C) 2009-2013, Raphael Assenat" << endl << endl;
+	
+	printf("raphnet.net Gamecube adapter L/R buttons calibration fixer v1.0\n");
+	printf("Copyright (C) 2009-2013, Raphael Assenat\n\n");	
 
 	res = DirectInput8Create(GetModuleHandle( NULL ), DIRECTINPUT_VERSION, IID_IDirectInput8, 
 		(VOID **)&g_pDI, NULL);
@@ -141,12 +143,11 @@ int main(int argc, const char * argv[])
 	}
 	else {
 		printf("Modified %d joystick(s).\n", g_num_fixed);
-		
-		//g_pJoystick->RunControlPanel(0,0);
+	//	g_pJoystick->RunControlPanel(0,0);
 	}
 
-
-	cout << endl << "-- Press ENTER to exit --" << endl;
+	printf("\n -- Press ENTER to exit --\n");
+	
 	getchar();
 
 	return 0;
