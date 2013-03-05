@@ -136,7 +136,7 @@ int main(int argc, char * argv[])
 	int opt;
 	int run_calibration = 0;
 
-	printf("raphnet.net Gamecube adapter L/R buttons calibration fixer v1.0\n");
+	printf("raphnet.net Gamecube adapter L/R buttons calibration fixer v1.1\n");
 	printf("Copyright (C) 2009-2013, Raphael Assenat\n\n");	
 
 	while(-1 != (opt = getopt(argc, argv, "hlcu"))) {
