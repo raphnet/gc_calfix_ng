@@ -122,6 +122,10 @@ BOOL CALLBACK EnumJoysticksCallback(const DIDEVICEINSTANCE*
 		printf("Found Device ID : VID=%04x  PID=%04x (ADAP-GCN64 v2.2)\n", vid, pid);
 		fixJoystickCalibration(); // uses global
 	}
+	else if (vid==0x289b && pid==0x0004) {
+		printf("Found Device ID : VID=%04x  PID=%04x (ADAP-GCN64 v2.3)\n", vid, pid);
+		fixJoystickCalibration(); // uses global
+	}
 	else {
 		printf("Ignoring Device ID : VID=%04x  PID=%04x\n", vid, pid);
 		
@@ -136,7 +140,7 @@ int main(int argc, char * argv[])
 	int opt;
 	int run_calibration = 0;
 
-	printf("raphnet.net Gamecube adapter L/R buttons calibration fixer v1.1\n");
+	printf("raphnet.net Gamecube adapter L/R buttons calibration fixer v1.2\n");
 	printf("Copyright (C) 2009-2013, Raphael Assenat\n\n");	
 
 	while(-1 != (opt = getopt(argc, argv, "hlcu"))) {
