@@ -1,4 +1,4 @@
-# Gamecube L/R shoulder button calibration fixer for (old) raphnet adapter
+# Gamecube L/R shoulder button calibration fixer for (old) raphnet adapters
 
 This is a tool to fix calibration of Gamecube controller L/R shoulder buttons.
 
