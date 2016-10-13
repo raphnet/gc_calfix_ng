@@ -12,9 +12,9 @@ This calibration fixer is not required (and has not effect) for [version 3 adapt
 
 As explained [here](http://www.raphnet.net/electronique/gc_n64_usb_manual/index_en.php#3)
 
-`The Gamecube controller sliders are often problematic because they lack a central resting position. Many games assume an axis to be active when the value it reads is different, within a certain margin, from the center position. Thus, when performing button assignments, the L and R sliders will often immediately register as active and hinder (or most likely, prevent) successfully configuring the game for the controller.
-`
-`The following tool must be run after calibration (see instructions above). When it is run, it looks for raphnet GC/N64 to usb adapters and alters the calibration data the system keeps for each unit found. All axis are left as calibrated, except the L and R sliders which are recentered.
+> The Gamecube controller sliders are often problematic because they lack a central resting position. Many games assume an axis to be active when the value it reads is different, within a certain margin, from the center position. Thus, when performing button assignments, the L and R sliders will often immediately register as active and hinder (or most likely, prevent) successfully configuring the game for the controller.
+>
+> The following tool must be run after calibration (see instructions above). When it is run, it looks for raphnet GC/N64 to usb adapters and alters the calibration data the system keeps for each unit found. All axis are left as calibrated, except the L and R sliders which are recentered.
 
 ## What else can it do?
 
